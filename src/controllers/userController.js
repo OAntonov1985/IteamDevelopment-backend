@@ -9,7 +9,12 @@ const createOneUser = catchAsync(async (req, res, next) => {
 
     const user = await User.create(reqData);
 
-    createSendToken(user, 201, res);
+    const userToSend = {
+        name: user.name,
+        email: user.email
+    };
+
+    createSendToken(userToSend, 201, res);
 });
 
 const logIn = catchAsync(async (req, res, next) => {
