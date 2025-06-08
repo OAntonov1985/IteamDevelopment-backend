@@ -22,7 +22,7 @@ const createSendToken = (user, statusCode, res) => {
     res.cookie("isAuthorized", true, {
         maxAge: maxAge,
         httpOnly: false,
-        secure: false,
+        secure: true,
         sameSite: "None"
     });
 
