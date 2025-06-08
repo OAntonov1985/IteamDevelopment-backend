@@ -2,38 +2,38 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require("../utils/appError");
 const { createSendToken } = require("../utils/createSendToken");
+const getTokenFromRequest = require("../utils/getTokenFromRequest")
 
-const createOneUser = catchAsync(async (req, res, next) => {
-    const { name, email, password, passwordConfirm } = req.body;
-    const reqData = { name, email, password, passwordConfirm };
+const updateFavoriteJobs = catchAsync(async (req, res, next) => {
+    const newLikedJobsArr = req.body.likedJobs;
 
-    const user = await User.create(reqData);
-
-    const userToSend = {
-        name: user.name,
-        email: user.email
+    if (!newLikedJobsArr) {
+        return next(AppError("Дані для оновлення відсутні"), 400)
     };
 
-    createSendToken(userToSend, 201, res);
+    const userId = getTokenFromRequest();
+
+    if (!userId) {
+        return next(new Error('Користувач не авторизований або ID користувача відсутній.'));
+    };
+
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: { likedJobs: newLikedJobsArr } },
+        {
+            new: true,
+            runValidators: true,
+        }
+    );
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user,
+        },
+    });
+
 });
 
-const logIn = catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return next(AppError("Будь ласка відправте логін та пароль"), 400)
-    };
 
-    const user = await User.findOne({ email: email }).select("+password").select("-role");
-    const result = await user.correctPassword(password, user.password);
-
-    if (!user || !result) {
-        return next(AppError("Невірні логін або пароль"), 401)
-    };
-
-    const userNoPasswortField = user.toObject();
-    delete userNoPasswortField.password;
-
-    createSendToken(userNoPasswortField, 200, res);
-});
-
-module.exports = { createOneUser, logIn };
+module.exports = { updateFavoriteJobs };

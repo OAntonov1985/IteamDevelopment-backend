@@ -5,14 +5,12 @@ const cors = require('cors');
 const AppError = require("./utils/appError");
 const createError = require("./utils/errorController");
 
-const usersRouter = require("./routes/usersRouter");
+const authRouter = require("./routes/authRouter");
 
 const app = express();
 app.set('trust proxy', 1);
 
 app.use(mongoSanitize());
-
-
 
 app.use(express.json());
 
@@ -22,15 +20,14 @@ app.use(morgan("dev"));
 app.use(cors({
     origin: [
         "http://localhost:3000",
-        'https://ortodont-clinic-frontend.vercel.app',
-        /^http:\/\/192\.168\.0\.\d+:\d+$/,
+        // 'https://ortodont-clinic-frontend.vercel.app',
     ],
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
 
 
 app.all("*", (req, res, next) => {

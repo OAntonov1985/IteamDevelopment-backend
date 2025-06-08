@@ -10,18 +10,25 @@ const singToken = id => {
 const createSendToken = (user, statusCode, res) => {
     const token = singToken(user._id);
     const maxAge = JWT_EXPIRES_IN * 24 * 60 * 60 * 1000;
-    const isProduction = process.env.NODE_ENV === 'production';
 
     res.cookie("jwt", token, {
         maxAge: maxAge,
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "None" : "Lax",
+        secure: true,
+        sameSite: "None",
         path: "/"
+    });
+
+    res.cookie("isAuthorized", true, {
+        maxAge: maxAge,
+        httpOnly: false,
+        secure: true,
+        sameSite: "None"
     });
 
     delete user._id;
     delete user.id;
+
     res.status(statusCode).json({
         status: "success",
         data: user,

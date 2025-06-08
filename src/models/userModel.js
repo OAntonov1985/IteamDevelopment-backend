@@ -32,6 +32,24 @@ const userSchema = mongoose.Schema({
             message: 'Паролі не співпадають!'
         }
     },
+    desiredPosition: {
+        type: String,
+        required: [true, 'Будь ласка введіть телефон пацієнта!']
+    },
+    industry: {
+
+        type: String,
+        required: [true, 'Будь ласка, оберіть сферу діяльності.'],
+        enum: ['it', 'business', 'construction'],
+    },
+    aboutMe: {
+        type: String,
+        maxlength: [1000, 'Розділ "Про мене" не може перевищувати 1000 символів.'],
+    },
+    likedGobs: {
+        type: Array,
+        default: []
+    },
     createdAt: {
         type: Date,
         default: Date.now(),
