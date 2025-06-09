@@ -10,7 +10,7 @@ const updateFavoriteJobs = catchAsync(async (req, res, next) => {
         return next(AppError("Дані для оновлення відсутні"), 400)
     };
 
-    const userId = getTokenFromRequest();
+    const userId = getTokenFromRequest(req);
 
     if (!userId) {
         return next(new Error('Користувач не авторизований або ID користувача відсутній.'));
@@ -23,7 +23,14 @@ const updateFavoriteJobs = catchAsync(async (req, res, next) => {
             new: true,
             runValidators: true,
         }
-    );
+    ).populate({
+        path: 'likedJobs',
+        select: 'companyName positionName salary description industry'
+    });
+
+    if (!user) {
+        return next(AppError('Користувача не знайдено.', 404));
+    }
 
     res.status(200).json({
         status: 'success',

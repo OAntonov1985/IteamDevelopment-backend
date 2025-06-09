@@ -46,10 +46,12 @@ const userSchema = mongoose.Schema({
         type: String,
         maxlength: [1000, 'Розділ "Про мене" не може перевищувати 1000 символів.'],
     },
-    likedGobs: {
-        type: Array,
-        default: []
-    },
+    likedJobs: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Job'
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now(),

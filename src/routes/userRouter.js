@@ -3,7 +3,6 @@ const router = express.Router();
 
 const { updateFavoriteJobs } = require("../controllers/userController");
 
-router.update("/likedjobs", updateFavoriteJobs);
-
+router.patch("/likedjobs", updateFavoriteJobs);
 
 module.exports = router;

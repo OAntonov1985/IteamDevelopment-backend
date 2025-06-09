@@ -6,8 +6,11 @@ const AppError = require("./utils/appError");
 const createError = require("./utils/errorController");
 
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
+const jobsRouter = require("./routes/jobsRouter");
 
 const app = express();
+
 app.set('trust proxy', 1);
 
 app.use(mongoSanitize());
@@ -28,6 +31,8 @@ app.use(cors({
 }));
 
 app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
+app.use('/api/jobs', jobsRouter);
 
 
 app.all("*", (req, res, next) => {

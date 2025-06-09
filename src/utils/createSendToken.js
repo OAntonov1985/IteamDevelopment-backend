@@ -19,13 +19,6 @@ const createSendToken = (user, statusCode, res) => {
         path: "/"
     });
 
-    res.cookie("isAuthorized", true, {
-        maxAge: maxAge,
-        httpOnly: false,
-        secure: true,
-        sameSite: "None"
-    });
-
     delete user._id;
     delete user.id;
 
