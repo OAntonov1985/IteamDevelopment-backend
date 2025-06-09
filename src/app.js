@@ -8,10 +8,14 @@ const createError = require("./utils/errorController");
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const jobsRouter = require("./routes/jobsRouter");
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 
 app.set('trust proxy', 1);
+
+app.use(cookieParser());
 
 app.use(mongoSanitize());
 

@@ -1,5 +1,4 @@
 const getTokenFromRequest = (req) => {
-
     if (req.cookies?.jwt) {
         return req.cookies.jwt
     };

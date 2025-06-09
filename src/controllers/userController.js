@@ -1,7 +1,8 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require("../utils/appError");
-const getTokenFromRequest = require("../utils/getTokenFromRequest")
+const getTokenFromRequest = require("../utils/getTokenFromRequest");
 
 const updateFavoriteJobs = catchAsync(async (req, res, next) => {
     const newLikedJobsArr = req.body.likedJobs;
@@ -10,7 +11,11 @@ const updateFavoriteJobs = catchAsync(async (req, res, next) => {
         return next(AppError("Дані для оновлення відсутні"), 400)
     };
 
-    const userId = getTokenFromRequest(req);
+    const token = getTokenFromRequest(req);
+
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+
+    const userId = decoded.id;
 
     if (!userId) {
         return next(new Error('Користувач не авторизований або ID користувача відсутній.'));
