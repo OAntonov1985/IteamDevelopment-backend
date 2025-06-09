@@ -62,7 +62,7 @@ const searchJobs = catchAsync(async (req, res, next) => {
     }
 
     const jobs = await Job.find(filter);
-    в
+
     if (!jobs || jobs.length === 0) {
         return next(new AppError('Вакансій за вашим запитом не знайдено.', 404));
     }
