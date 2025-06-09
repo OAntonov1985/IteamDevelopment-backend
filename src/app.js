@@ -20,7 +20,7 @@ app.use(morgan("dev"));
 app.use(cors({
     origin: [
         "http://localhost:3000",
-        // 'https://ortodont-clinic-frontend.vercel.app',
+        'https://iteam-development-frontend.vercel.app/',
     ],
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],

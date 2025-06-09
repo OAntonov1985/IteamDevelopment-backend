@@ -11,7 +11,8 @@ const createOneUser = catchAsync(async (req, res, next) => {
 
     const userToSend = {
         name: user.name,
-        email: user.email
+        email: user.email,
+        industry: user.industry
     };
 
     createSendToken(userToSend, 201, res);
